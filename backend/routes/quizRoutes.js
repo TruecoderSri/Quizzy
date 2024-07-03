@@ -8,7 +8,7 @@ import {
   deleteQuiz,
 } from "../controllers/quizController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import { validateQuiz } from "../middleware/validateQuiz.js";
+// import { validateQuiz } from "../middleware/validateQuiz.js";
 const quizRoutes = Router();
 
 quizRoutes.post("/", authMiddleware, validateQuiz, createQuiz);
