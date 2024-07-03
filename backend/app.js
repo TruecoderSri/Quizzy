@@ -21,6 +21,4 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/users", profileRoutes);
 
-export {
-    app
-}
+export { app };
