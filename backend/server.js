@@ -23,8 +23,8 @@ app.use("/api/users", profileRoutes);
 
 const PORT = 5000;
 
-// app.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 
-module.exports = { app };
+// module.exports = { app };
