@@ -17,5 +17,11 @@
       "src": "/api/users/(.*)",
       "dest": "/routes/profileRoutes/$1"
     }
+  ],
+   "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
   ]
 }
