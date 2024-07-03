@@ -3,24 +3,24 @@
   "routes": [
     {
       "src": "/api/auth/(.*)",
-      "dest": "/routes/authRoutes/$1"
+      "dest": "./routes/authRoutes/$1"
     },
     {
-      "src": "/api/questions/(.*)",
-      "dest": "/routes/questionRoutes/$1"
+      "src": "./api/questions/(.*)",
+      "dest": "./routes/questionRoutes/$1"
     },
     {
       "src": "/api/quizzes/(.*)",
-      "dest": "/routes/quizRoutes/$1"
+      "dest": "./routes/quizRoutes/$1"
     },
     {
       "src": "/api/users/(.*)",
-      "dest": "/routes/profileRoutes/$1"
+      "dest": "./routes/profileRoutes/$1"
     }
   ],
    "builds": [
     {
-      "src": "server.js",
+      "src": "./server.js",
       "use": "@vercel/node"
     }
   ]
