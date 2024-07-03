@@ -1,5 +1,5 @@
 import Quiz from "../models/Quiz.js";
-import User from "../models/user.js";
+import User from "../models/User.js";
 
 export async function createQuiz(req, res) {
   const { title, description, questions, timer } = req.body;
