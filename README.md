@@ -1,6 +1,6 @@
 # Quizzy - Online Quiz Maker
 
-Quizzy is a platform that enables users to create, take, and manage quizzes. Users can sign up, log in, create quizzes with multiple-choice questions, take quizzes, and see their scores. The platform is built with a Node.js backend, a MongoDB database, and a React frontend styled with Tailwind CSS.
+Quizzy is a platform that enables users to create, take, and manage quizzes. Users can sign up, log in, create their own quiz in any domain area and make it available for the world, take part in quizzes, and see their scores. The platform is built with a Node.js backend, a MongoDB database, and a React frontend styled with Tailwind CSS.
 
 ## Table of Contents
 - [Features](#features)
