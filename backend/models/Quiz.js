@@ -3,6 +3,7 @@ const { Schema, model } = mongoose;
 
 const QuizSchema = new Schema(
   {
+    category: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
     questions: [

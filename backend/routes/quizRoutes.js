@@ -3,14 +3,17 @@ import {
   createQuiz,
   getQuizzes,
   getQuizById,
+  filterQuizzes,
   submitQuiz,
   updateQuiz,
   deleteQuiz,
 } from "../controllers/quizController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+
 const quizRoutes = Router();
 
 quizRoutes.post("/", authMiddleware, createQuiz);
+quizRoutes.get("/filter", filterQuizzes);
 quizRoutes.get("/", getQuizzes);
 quizRoutes.get("/:id", getQuizById);
 quizRoutes.post("/:id/submit", submitQuiz);

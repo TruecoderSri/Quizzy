@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { MdOutlineEdit } from "react-icons/md";
-import { IoTrashBinOutline } from "react-icons/io5";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "../App.css";
 function Profile() {
   const token = localStorage.getItem("token");
@@ -85,6 +85,12 @@ function Profile() {
       console.error("Error deleting quiz:", error);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <div className="container mx-auto p-6 overflow-hidden">
       {user && (
@@ -92,7 +98,7 @@ function Profile() {
           <h1 className="text-4xl sm:text-6xl text-gray-700 font-extrabold m-4 mb-8">
             Profile
           </h1>
-          <div className="info flex flex-col">
+          <div className="info flex flex-col gap-2">
             <p className="text-xl sm:text-2xl m-4">
               <span className="font-bold">Username:</span> {user.username}
             </p>
@@ -100,6 +106,14 @@ function Profile() {
               <span className="font-bold">Password:</span>{" "}
               {user.password ? `${user.password.slice(0, 0)}******` : ""}
             </p>
+            <div className="flex justify-center md:justify-end">
+              <button
+                className="bg-gray-300 font-semibold rounded-md text-xl sm:text-2xl py-2 px-4 hover:bg-gray-400 w-fit"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -146,17 +160,19 @@ function Profile() {
                       {quiz.title}
                     </p>
                     <div className="icons flex flex-row gap-1">
-                      <MdOutlineEdit
+                      <EditIcon
                         size={32}
                         onClick={() => {
                           navigate(`/update/${quiz._id}`);
                         }}
+                        className="transform hover:translate-y-[-2px] transition-transform duration-200"
                       />
-                      <IoTrashBinOutline
+                      <DeleteIcon
                         size={32}
                         onClick={() => {
                           handleDelete(quiz._id);
                         }}
+                        className="transform hover:translate-y-[-2px] transition-transform duration-200"
                       />
                     </div>
                   </li>

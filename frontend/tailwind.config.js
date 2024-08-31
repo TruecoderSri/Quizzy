@@ -9,7 +9,7 @@ export default {
       addUtilities({
         ".scrollbar-hidden": {
           "&::-webkit-scrollbar": {
-            display: "none" /* Safari and Chrome */,
+            display: "none",
           },
         },
       });

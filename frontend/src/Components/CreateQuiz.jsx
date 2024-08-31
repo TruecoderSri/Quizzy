@@ -7,6 +7,7 @@ function CreateQuiz() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [timer, setTimer] = useState(5);
+  const [category, setCategory] = useState("");
   const [questions, setQuestions] = useState([
     { question: "", options: ["", "", "", ""], correctAnswer: "" },
   ]);
@@ -14,7 +15,21 @@ function CreateQuiz() {
     title: "",
     description: "",
     questions: "",
+    category: "",
   });
+
+  const categories = [
+    "Math",
+    "Science",
+    "History",
+    "Geography",
+    "Literature",
+    "Art",
+    "Music",
+    "Technology",
+    "Sports",
+    "General Knowledge",
+  ];
 
   const handleQuestionChange = (index, event) => {
     const newQuestions = [...questions];
@@ -33,12 +48,8 @@ function CreateQuiz() {
     const currentQuestion = newQuestions[questionIndex];
     const optionValue = currentQuestion.options[optionIndex];
 
-    if (currentQuestion.correctAnswer === optionValue) {
-      currentQuestion.correctAnswer = "";
-    } else {
-      currentQuestion.correctAnswer = optionValue;
-    }
-
+    currentQuestion.correctAnswer =
+      currentQuestion.correctAnswer === optionValue ? "" : optionValue;
     setQuestions(newQuestions);
   };
 
@@ -66,12 +77,14 @@ function CreateQuiz() {
     if (
       !title ||
       !description ||
+      !category ||
       questions.some((q) => !q.question || q.options.includes(""))
     ) {
       setErrors({
         ...errors,
         title: !title ? "Title is required." : "",
         description: !description ? "Description is required." : "",
+        category: !category ? "Category is required." : "",
         questions: questions.some((q) => !q.question || q.options.includes(""))
           ? "Please fill out all questions and options."
           : "",
@@ -82,6 +95,7 @@ function CreateQuiz() {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_BASE_URL}/api/quizzes`,
         {
+          category,
           title,
           description,
           questions,
@@ -95,9 +109,17 @@ function CreateQuiz() {
       );
       console.log(response.data);
       alert("Quiz Created Successfully");
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setQuestions([
+        { question: "", options: ["", "", "", ""], correctAnswer: "" },
+      ]);
+      setTimer(5);
       navigate("/dashboard");
     } catch (error) {
-      console.error(error);
+      console.error("Error creating quiz:", error);
+      alert("There was an error creating the quiz. Please try again.");
     }
   };
 
@@ -108,6 +130,28 @@ function CreateQuiz() {
       </h1>
       <div className="max-w-4xl mx-auto my-8 p-8 bg-white shadow-lg rounded-lg">
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-left mb-2 font-medium">Category</label>
+            <select
+              name="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((categoryOption) => (
+                <option key={categoryOption} value={categoryOption}>
+                  {categoryOption}
+                </option>
+              ))}
+            </select>
+            {errors.category && (
+              <p className="text-red-500 text-sm">{errors.category}</p>
+            )}
+          </div>
+
           <div className="mb-4">
             <label className="block text-left mb-2 font-medium">Title</label>
             <input
@@ -121,6 +165,7 @@ function CreateQuiz() {
               <p className="text-red-500 text-sm">{errors.title}</p>
             )}
           </div>
+
           <div className="mb-4">
             <label className="block text-left mb-2 font-medium">
               Description
@@ -135,6 +180,7 @@ function CreateQuiz() {
               <p className="text-red-500 text-sm">{errors.description}</p>
             )}
           </div>
+
           <div className="mb-4">
             <label className="block text-left mb-2 font-medium">
               Timer (in minutes)
@@ -143,10 +189,11 @@ function CreateQuiz() {
               type="number"
               name="timer"
               value={timer}
-              onChange={(e) => setTimer(e.target.value)}
+              onChange={(e) => setTimer(Number(e.target.value))}
               className="w-full px-4 py-2 border rounded-lg"
             />
           </div>
+
           {questions.map((q, qIndex) => (
             <div key={qIndex} className="mb-6">
               <label className="block text-left mb-2 font-medium">
@@ -186,17 +233,17 @@ function CreateQuiz() {
           {errors.questions && (
             <p className="text-red-500 text-sm">{errors.questions}</p>
           )}
-          <div className="flex justify-evenly">
+          <div className="flex justify-evenly gap-4 ">
             <button
               type="button"
               onClick={handleAddQuestion}
-              className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-800"
+              className="bg-blue-600 text-lg text-bold text-white py-2 px-4 rounded hover:bg-blue-800"
             >
               Add Question
             </button>
             <button
               type="submit"
-              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-800"
+              className="bg-green-600 text-lg text-bold text-white py-2 px-4 rounded hover:bg-green-800"
             >
               Create Quiz
             </button>

@@ -11,11 +11,25 @@ function UpdateQuiz() {
   const [questions, setQuestions] = useState([
     { question: "", options: ["", "", "", ""], correctAnswer: "" },
   ]);
+  const [category, setcategory] = useState("");
   const [errors, setErrors] = useState({
     title: "",
     description: "",
     questions: "",
   });
+
+  const categorys = [
+    "Mathematics",
+    "Science",
+    "History",
+    "Geography",
+    "Technology",
+    "Literature",
+    "Sports",
+    "Art",
+    "Music",
+    "General Knowledge",
+  ];
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -28,6 +42,7 @@ function UpdateQuiz() {
         setDescription(quiz.description);
         setTimer(quiz.timer);
         setQuestions(quiz.questions);
+        setcategory(quiz.category);
       } catch (error) {
         console.error("Error fetching quiz:", error);
       }
@@ -84,12 +99,14 @@ function UpdateQuiz() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
+      !category ||
       !title ||
       !description ||
       questions.some((q) => !q.question || q.options.includes(""))
     ) {
       setErrors({
         ...errors,
+        category: !category ? "category is required." : "",
         title: !title ? "Title is required." : "",
         description: !description ? "Description is required." : "",
         questions: questions.some((q) => !q.question || q.options.includes(""))
@@ -102,6 +119,7 @@ function UpdateQuiz() {
       const response = await axios.put(
         `${import.meta.env.VITE_APP_BASE_URL}/api/quizzes/${quizId}/update`,
         {
+          category,
           title,
           description,
           questions,
@@ -128,6 +146,25 @@ function UpdateQuiz() {
       </h1>
       <div className="max-w-4xl mx-auto my-8 p-8 bg-white shadow-lg rounded-lg">
         <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-left mb-2 font-medium">Category</label>
+            <select
+              name="category"
+              value={category}
+              onChange={(e) => setcategory(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            >
+              <option value="">Select a category</option>
+              {categorys.map((categoryOption, index) => (
+                <option key={index} value={categoryOption}>
+                  {categoryOption}
+                </option>
+              ))}
+            </select>
+            {errors.category && (
+              <p className="text-red-500 text-sm">{errors.category}</p>
+            )}
+          </div>
           <div className="mb-4">
             <label className="block text-left mb-2 font-medium">Title</label>
             <input
@@ -167,6 +204,7 @@ function UpdateQuiz() {
               className="w-full px-4 py-2 border rounded-lg"
             />
           </div>
+
           {questions.map((q, qIndex) => (
             <div key={qIndex} className="mb-6">
               <label className="block text-left mb-2 font-medium">
@@ -206,7 +244,7 @@ function UpdateQuiz() {
           {errors.questions && (
             <p className="text-red-500 text-sm">{errors.questions}</p>
           )}
-          <div className="flex justify-evenly">
+          <div className="flex justify-evenly gap-4">
             <button
               type="button"
               onClick={handleAddQuestion}

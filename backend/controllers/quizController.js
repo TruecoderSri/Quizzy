@@ -2,11 +2,12 @@ import Quiz from "../models/Quiz.js";
 import User from "../models/User.js";
 
 export async function createQuiz(req, res) {
-  const { title, description, questions, timer } = req.body;
+  const { category, title, description, questions, timer } = req.body;
   const userId = req.user.userId;
   console.log(req.user.userId);
   try {
     const quiz = new Quiz({
+      category,
       title,
       description,
       questions,
@@ -52,6 +53,31 @@ export async function getQuizById(req, res) {
   }
 }
 
+export async function filterQuizzes(req, res) {
+  try {
+    const { category, sortBy } = req.query;
+    let filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    let quizzesQuery = Quiz.find(filter);
+
+    if (sortBy) {
+      quizzesQuery = quizzesQuery.sort({
+        createdAt: sortBy === "desc" ? -1 : 1,
+      });
+    }
+
+    const quizzes = await quizzesQuery.exec();
+    res.json(quizzes);
+  } catch (error) {
+    console.error("Error fetching quizzes:", error);
+    res.status(500).json({ message: "Error fetching quizzes" });
+  }
+}
+
 export async function submitQuiz(req, res) {
   const { id } = req.params;
   const { answer, userId } = req.body;
@@ -89,14 +115,14 @@ export async function submitQuiz(req, res) {
 
 export async function updateQuiz(req, res) {
   const { id } = req.params;
-  const { title, description, questions, timer } = req.body;
+  const { category, title, description, questions, timer } = req.body;
 
   try {
     const quiz = await Quiz.findById(id);
     if (!quiz) {
       return res.status(404).json({ msg: "Quiz not found" });
     }
-
+    quiz.category = category;
     quiz.title = title;
     quiz.description = description;
     quiz.questions = questions;
