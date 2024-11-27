@@ -52,6 +52,7 @@ function Profile() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+
         setQuizzesCreated(response.data);
       } catch (error) {
         console.error("Error fetching quizzes created:", error);
@@ -86,11 +87,6 @@ function Profile() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
   return (
     <div className="container mx-auto p-6 overflow-hidden">
       {user && (
@@ -106,14 +102,6 @@ function Profile() {
               <span className="font-bold">Password:</span>{" "}
               {user.password ? `${user.password.slice(0, 0)}******` : ""}
             </p>
-            <div className="flex justify-center md:justify-end">
-              <button
-                className="bg-gray-300 font-semibold rounded-md text-xl sm:text-2xl py-2 px-4 hover:bg-gray-400 w-fit"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
           </div>
         </div>
       )}
@@ -128,19 +116,21 @@ function Profile() {
               No Quizzes Taken
             </div>
           ) : (
-            <div className="quizzes-taken w-full md:w-1/2 max-h-96 overflow-y-auto scrollbar-hidden">
+            <div className="quizzes-taken w-full md:w-1/2">
               <h2 className="text-3xl font-semibold mb-4">Quizzes Taken</h2>
-              <ul>
-                {quizzesTaken.map((quiz) => (
-                  <li
-                    key={quiz._id}
-                    className="mb-2 p-4 bg-white shadow rounded-md hover:bg-gray-200 flex flex-row justify-between"
-                  >
-                    <p className="text-lg font-medium">{quiz.title}</p>
-                    <p>Score: {quiz.score}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="max-h-96 overflow-y-auto scrollbar-hidden">
+                <ul>
+                  {quizzesTaken.map((quiz) => (
+                    <li
+                      key={quiz._id}
+                      className="mb-2 p-4 bg-white shadow rounded-md hover:bg-gray-200 flex flex-row justify-between"
+                    >
+                      <p className="text-lg font-medium">{quiz.title}</p>
+                      <p>Score: {quiz.score}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
           {quizzesCreated.length === 0 ? (
@@ -148,36 +138,38 @@ function Profile() {
               No Quizzes Created
             </div>
           ) : (
-            <div className="quizzes-created w-full md:w-1/2 max-h-96 overflow-y-auto scrollbar-hidden">
+            <div className="quizzes-created w-full md:w-1/2">
               <h2 className="text-3xl font-semibold mb-4">Quizzes Created</h2>
-              <ul>
-                {quizzesCreated.map((quiz) => (
-                  <li
-                    key={quiz._id}
-                    className="mb-2 p-4 bg-white shadow rounded-md hover:bg-gray-200 flex flex-row justify-between"
-                  >
-                    <p className="text-lg font-medium text-center">
-                      {quiz.title}
-                    </p>
-                    <div className="icons flex flex-row gap-1">
-                      <EditIcon
-                        size={32}
-                        onClick={() => {
-                          navigate(`/update/${quiz._id}`);
-                        }}
-                        className="transform hover:translate-y-[-2px] transition-transform duration-200"
-                      />
-                      <DeleteIcon
-                        size={32}
-                        onClick={() => {
-                          handleDelete(quiz._id);
-                        }}
-                        className="transform hover:translate-y-[-2px] transition-transform duration-200"
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <div className="max-h-96 overflow-y-auto scrollbar-hidden">
+                <ul>
+                  {quizzesCreated.map((quiz) => (
+                    <li
+                      key={quiz._id}
+                      className="mb-2 p-4 bg-white shadow rounded-md hover:bg-gray-200 flex flex-row justify-between"
+                    >
+                      <p className="text-lg font-medium text-center">
+                        {quiz.title}
+                      </p>
+                      <div className="icons flex flex-row gap-1">
+                        <EditIcon
+                          size={32}
+                          onClick={() => {
+                            navigate(`/update/${quiz._id}`);
+                          }}
+                          className="transform hover:translate-y-[-2px] transition-transform duration-200"
+                        />
+                        <DeleteIcon
+                          size={32}
+                          onClick={() => {
+                            handleDelete(quiz._id);
+                          }}
+                          className="transform hover:translate-y-[-2px] transition-transform duration-200"
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>

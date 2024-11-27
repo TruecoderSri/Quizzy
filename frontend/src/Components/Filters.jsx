@@ -28,12 +28,15 @@ function Filters({ onFilterChange }) {
 
   return (
     <div className="flex flex-col space-y-6">
-      <h2 className="text-slate-700 text-semibold text-2xl items-center font-bold font-mono">
+      <h2
+        className="text-slate-700 text-semibold text-2xl items-center font-bold font-mono"
+        id="filter-heading"
+      >
         Filter
       </h2>
       <div className="flex mx-3 justify-center">
         <div className="w-3/4 px-3 border-gray-100 border-r space-y-6">
-          <FormControl fullWidth>
+          <FormControl fullWidth aria-labelledby="filter-heading">
             <InputLabel variant="standard" htmlFor="category-native" shrink>
               Category
             </InputLabel>
@@ -43,6 +46,7 @@ function Filters({ onFilterChange }) {
               inputProps={{
                 name: "category",
                 id: "category-native",
+                "aria-label": "Select quiz category",
               }}
             >
               <option value="All">All</option>
@@ -59,7 +63,7 @@ function Filters({ onFilterChange }) {
             </NativeSelect>
           </FormControl>
 
-          <FormControl fullWidth>
+          <FormControl fullWidth aria-labelledby="filter-heading">
             <InputLabel variant="standard" htmlFor="latest-native">
               Sort by
             </InputLabel>
@@ -69,6 +73,7 @@ function Filters({ onFilterChange }) {
               inputProps={{
                 name: "latest",
                 id: "latest-native",
+                "aria-label": "Select sort order for quizzes",
               }}
             >
               <option value="Latest">Latest</option>
@@ -78,14 +83,16 @@ function Filters({ onFilterChange }) {
 
           <div className="flex space-x-4 mt-4 p-2 justify-center">
             <button
-              className="bg-blue-900 text-white px-4 py-2 rounded text-md w-fit hover:bg-blue-950"
+              className="bg-indigo-800 text-white px-4 py-2 rounded text-md w-fit hover:bg-blue-950 focus:outline-8 focus:outline-black"
               onClick={applyFilters}
+              aria-label="Apply selected filters"
             >
               Apply
             </button>
             <button
-              className="bg-gray-600 hover:bg-gray-800 text-white px-4 py-2 rounded text-md w-fit"
+              className="bg-gray-600 hover:bg-gray-800 text-white px-4 py-2 rounded text-md w-fit focus:outline-8 focus:outline-black"
               onClick={resetFilters}
+              aria-label="Reset filters to default"
             >
               Reset
             </button>

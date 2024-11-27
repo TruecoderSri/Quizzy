@@ -13,6 +13,7 @@ const UserSchema = new Schema(
       {
         quizId: { type: Schema.Types.ObjectId, ref: "Quiz" },
         score: { type: Number },
+        timeFinished: { type: Number },
       },
     ],
   },

@@ -16,12 +16,16 @@ const QuizSchema = new Schema(
     timer: { type: Number, required: false },
     score: { type: Number },
     createdBy: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Mixed,
       ref: "User",
       required: true,
     },
   },
   { timestamps: true }
 );
+
+QuizSchema.virtual("isSystemGenerated").get(function () {
+  return this.createdBy === "system-placeholder";
+});
 
 export default model("Quiz", QuizSchema);
